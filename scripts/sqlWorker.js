@@ -1,7 +1,7 @@
-//var execBtn = document.getElementById("execute");
-//var outputElm = document.getElementById('output');
-// var errorElm = document.getElementById('error');
-// var commandsElm = document.getElementById('commands');
+var execBtn = document.getElementById("execute");
+var outputElm = document.getElementById('output');
+var errorElm = document.getElementById('error');
+var commandsElm = document.getElementById('commands');
 var dbFileElm = document.getElementById('dbfile');
 // var savedbElm = document.getElementById('savedb');
 
