@@ -1,9 +1,9 @@
-var execBtn = document.getElementById("execute");
-var outputElm = document.getElementById('output');
-var errorElm = document.getElementById('error');
-var commandsElm = document.getElementById('commands');
+//var execBtn = document.getElementById("execute");
+//var outputElm = document.getElementById('output');
+// var errorElm = document.getElementById('error');
+// var commandsElm = document.getElementById('commands');
 var dbFileElm = document.getElementById('dbfile');
-var savedbElm = document.getElementById('savedb');
+// var savedbElm = document.getElementById('savedb');
 
 // Start the worker in which sql.js will run
 var worker = new Worker("worker.sql-wasm.js");

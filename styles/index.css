@@ -1,0 +1,25 @@
+main {
+  position: relative;
+  margin: 0 auto;
+  overflow:hidden;
+}
+
+header {
+  background-color: rgb(76, 114, 76);
+  width: 100%;
+}
+
+h1 {
+  margin: 0 auto;
+  color: rgb(255, 255, 255);
+}
+
+.blockly-editor {
+  position: absolute;
+  top: 64px;
+  left: -400px;
+  transition: left .4s;
+  height: 460px;
+  width: 400px;
+  background-color: rgb(255, 0, 0);
+}
