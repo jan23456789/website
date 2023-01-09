@@ -5,8 +5,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Online SQL - Scratch like</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/codemirror.css">
   <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
   <link rel="stylesheet" href="styles/index.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/codemirror.js"></script>
+
 </head>
 
 <body>
@@ -46,6 +49,7 @@
       <!-- </category> -->
     </xml>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/mode/sql/sql.min.js"></script>
   <script type="text/javascript" src="scripts/sqlWorker.js"></script>
   <script type="text/javascript" src="scripts/main.js"></script>
   <script src="scripts/blockly/blockly_compressed.js"></script>
@@ -75,7 +79,8 @@
     function show_Code(){
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
 
-      document.getElementById('SQLCode').innerHTML = showCode();
+      document.getElementById('commands').innerHTML = showCode();
+      editor.setValue(showCode());
     };     
 
     function setToDefault(block,parentblock) {

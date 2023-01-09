@@ -6,7 +6,7 @@ var dbFileElm = document.getElementById('dbfile');
 // var savedbElm = document.getElementById('savedb');
 
 // Start the worker in which sql.js will run
-var worker = new Worker("worker.sql-wasm.js");
+var worker = new Worker("scripts/worker.sql-wasm.js");
 worker.onerror = error;
 
 // Open a database
@@ -138,4 +138,4 @@ function savedb() {
 	tic();
 	worker.postMessage({ action: 'export' });
 }
-savedbElm.addEventListener("click", savedb, true);
+// savedbElm.addEventListener("click", savedb, true);
