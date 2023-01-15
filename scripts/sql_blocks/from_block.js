@@ -15,6 +15,6 @@ Blockly.Blocks['from'] = {
 Blockly.JavaScript['from'] = function(block) {
   let statements_name = Blockly.JavaScript.statementToCode(block, 'NAME');
   // TODO: Assemble JavaScript into code variable.
-  let code = 'FROM '+statements_name+'<br>';
+  let code = '\n'+'FROM '+statements_name;
   return code;
 };

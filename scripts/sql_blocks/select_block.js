@@ -3,8 +3,8 @@ Blockly.Blocks['select'] = {
     this.appendStatementInput("SELECT")
         .setCheck("table")
         .appendField("SELECT")
-        .appendField(new Blockly.FieldDropdown([["\u2009",""], ["COUNT","COUNT"], ["AVG","AVERAGE"], ["SUM","SUM"]]), "SYNTAX")
-        .appendField(new Blockly.FieldDropdown([["\u2009",""], ["DISTINCT","DISTINCT"]]), "DISTINCT");
+        .appendField(new Blockly.FieldDropdown([["\u2009",""], ["COUNT"," COUNT("], ["AVG"," AVG("], ["SUM"," SUM("]]), "SYNTAX")
+        .appendField(new Blockly.FieldDropdown([["\u2009",""], ["DISTINCT","DISTINCT("]]), "DISTINCT");
     this.setInputsInline(true);
     this.setPreviousStatement(true, "statement");
     this.setNextStatement(true, "statement");
@@ -14,13 +14,23 @@ Blockly.Blocks['select'] = {
   }
 };
 
+function setDropdown_Distinct(distinct, syntax) {
+  if ((distinct!='')&&(syntax=='')) {
+    return(' '+distinct);
+  } else {
+    return(distinct);
+  }
+}
+
 Blockly.JavaScript['select'] = function(block) {
   let dropdown_syntax = block.getFieldValue('SYNTAX');
   let dropdown_distinct = block.getFieldValue('DISTINCT');
   let statements_select = Blockly.JavaScript.statementToCode(block, 'SELECT');
   Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
   // Code assembly
-  let code = 'SELECT ';
-  code += dropdown_syntax+' '+dropdown_distinct+' '+statements_select+'<br>';
+  let code = 'SELECT';
+  code += dropdown_syntax;
+  code += setDropdown_Distinct(dropdown_distinct,dropdown_syntax);
+  code += statements_select;
   return code;
 };
