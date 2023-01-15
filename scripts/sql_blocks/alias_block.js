@@ -14,7 +14,7 @@ Blockly.Blocks['alias'] = {
 Blockly.JavaScript['alias'] = function(block) {
   let text_alias = block.getFieldValue('ALIAS');
   // TODO: Assemble JavaScript into code variable.test
-  let code = '...';
+  let code = 'AS \''+text_alias+'\'';
   // TODO: Change ORDER_NONE to the correct strength.
-  return code;
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };

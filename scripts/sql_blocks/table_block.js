@@ -13,8 +13,8 @@ Blockly.Blocks['table'] = {
 
 Blockly.JavaScript['table'] = function(block) {
   let dropdown_table = block.getFieldValue('TABLE');
-  let value_table = Blockly.JavaScript.valueToCode(block, 'TABLE', Blockly.JavaScript.ORDER_ATOMIC);
-  // TODO: Assemble JavaScript into code variable.
-  let code = ' '+dropdown_table+value_table;
+  let value_table = Blockly.JavaScript.valueToCode(block, 'TABLE', Blockly.JavaScript.ORDER_ADDITION);
+  // Code assembly
+  let code = dropdown_table+value_table;
   return code;
 };

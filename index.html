@@ -20,14 +20,14 @@
   <main>
     <div id="blocklyDiv" style="height: 600px; width: 1200px; margin: auto;"></div>
     <div style="width: 1200px; margin: auto;">
-      <button id="execute" class="button">Execute</button>
-      <label class="button">Load an SQLite database file: <input type='file' id='dbfile'></label>
-      <p style="margin: 0; display: inline;">Your SQL Code:</p>
+      <button id="execute" class="button">Ausführen</button>
+      <label class="button">Lade eine SQLite Datenbank hoch: <input type='file' id='dbfile'></label>
+      <p style="margin: 0; display: inline;">Dein SQL Code:</p>
 
       <textarea id="commands"></textarea>
       <div id="error" class="error"></div>
 
-      <pre id="output">Results will be displayed hereeeeee</pre>
+      <pre id="output">Hier wird das Ergebnis ausgegeben</pre>
       <p></p>
     </div>
     <!-- <label class="button">Load an SQLite database file: <input type='file' id='dbfile'></label> -->
@@ -78,8 +78,8 @@
 
     function show_Code(){
       Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-
-      document.getElementById('commands').innerHTML = showCode();
+      let code = showCode()
+      document.getElementById('commands').innerHTML = code;
       editor.setValue(showCode());
     };     
 
@@ -95,7 +95,7 @@
       if (!block||!parent) return;
       let parentFieldValue = parent.getFieldValue('TABLE');
       switch(parentFieldValue) {
-        case 'TABLE1':
+        case 'albums':
           options = [['TABLE1_FIELD1','TABLE1_FIELD1'],['TABLE1_FIELD2','TABLE1_FIELD2'],['TABLE1_FIELD3','TABLE1_FIELD3']];
           break;
         case 'TABLE2':
@@ -107,12 +107,14 @@
         case 'TABLE4':
           options = [['TABLE4_FIELD1','TABLE4_FIELD1'],['TABLE4_FIELD2','TABLE4_FIELD2'],['TABLE4_FIELD3','TABLE4_FIELD3']];
           break;       
+        default:
+          options = [['Choose a Field...','PLEASESELECT']];
       }
       block.removeInput('COLUMN');
       block.appendValueInput("COLUMN")
             .setCheck("alias")
             .appendField(".")
-            .appendField(new Blockly.FieldDropdown(options), "COLUMN");      
+            .appendField(new Blockly.FieldDropdown(options), "COLUMN");
       return;
     };
 

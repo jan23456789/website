@@ -1,13 +1,13 @@
 function showCode() {
   Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-  let code = Blockly.JavaScript.workspaceToCode(workspace);
-  return code;
+  
+  return Blockly.JavaScript.workspaceToCode(workspace);
 };
 
 function getAllRecords() {
   //let recordArray = getTables();
   // Fill RecordArray with all available Records
-  let recordArray = [["name","albums"],["name","artists"],["name","customers"],["name","employees"],["name","genres"],["name","invoices"],["name","invoice_items"],["name","media_types"],["name","playlists"],["name","playlist_track"],["name","tracks"]];
+  let recordArray = [["albums","albums"],["artists","artists"],["customers","customers"],["employees","employees"],["genres","genres"],["invoices","invoices"],["invoice_items","invoice_items"],["media_types","media_types"],["playlists","playlists"],["playlist_track","playlist_track"],["tracks","tracks"]];
 
 //    allTables = [['Drag me onto the canvas','UNDEFINED']];
   return recordArray;
