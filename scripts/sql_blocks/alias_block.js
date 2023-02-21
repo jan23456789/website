@@ -1,3 +1,4 @@
+
 Blockly.Blocks['alias'] = {
   init: function() {
     this.appendDummyInput()

@@ -4,7 +4,7 @@ Blockly.Blocks['select'] = {
         .setCheck("table")
         .appendField("SELECT")
         .appendField(new Blockly.FieldDropdown([["\u2009",""], ["COUNT"," COUNT("], ["AVG"," AVG("], ["SUM"," SUM("]]), "SYNTAX")
-        .appendField(new Blockly.FieldDropdown([["\u2009",""], ["DISTINCT","DISTINCT("]]), "DISTINCT");
+        .appendField(new Blockly.FieldDropdown([["\u2009",""], ["DISTINCT","DISTINCT"]]), "DISTINCT");
     this.setInputsInline(true);
     this.setPreviousStatement(true, "statement");
     this.setNextStatement(true, "statement");
