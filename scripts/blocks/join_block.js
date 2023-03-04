@@ -1,4 +1,4 @@
-Blockly.Blocks['all_join'] = {
+Blockly.Blocks['join'] = {
     init: function() {
         this.appendValueInput("STATEMENT")
             .appendField(new Blockly.FieldDropdown([['\u2009', 'BLANKJ'], ['INNER', 'INNER'], ['LEFT', 'LEFT'], ['RIGHT', 'RIGHT']]), "chooseTableType")
@@ -8,9 +8,8 @@ Blockly.Blocks['all_join'] = {
             .appendField(new Blockly.FieldDropdown([['ON', 'onModifier'], ['\u2009', 'Blank']]), "modifierActive");
         this.setPreviousStatement(true, ['FROM']);
         this.setNextStatement(true, ['WHERE', 'GROUP BY']);
-        this.setColour(160);
-        this.setTooltip("");
-        this.setHelpUrl("");
+        this.setColour('%{BKY_LOOPS_HUE}');
+        this.setHelpUrl("https://www.w3schools.com/sql/sql_join.asp");
         this.setOnChange(function(changeEvent){
             if(this.getInput("STATEMENT") == null){
                 if(this.getFieldValue('modifierActive') != 'Blank'){
@@ -36,7 +35,7 @@ Blockly.Blocks['all_join'] = {
         });
     }
 };
-Blockly.JavaScript['all_join'] = function(block) {
+Blockly.JavaScript['join'] = function(block) {
     var type = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('chooseTableType'));
     if(type == 'BLANKJ'){
         type = '';

@@ -1,16 +1,14 @@
-Blockly.Blocks['bool_dropdown'] = {
+Blockly.Blocks['bool'] = {
   init: function() {
     this.appendDummyInput()
         .appendField(new Blockly.FieldDropdown([["true","true"], ["false","false"]]), "BOOLEAN");
     this.setInputsInline(false);
     this.setOutput(true, "Boolean");
-    this.setColour(160);
- this.setTooltip("");
- this.setHelpUrl("");
+    this.setColour('%{BKY_TEXTS_HUE}');
   }
 };
 
-Blockly.JavaScript['bool_dropdown'] = function(block) {
+Blockly.JavaScript['bool'] = function(block) {
   var dropdown_boolean = block.getFieldValue('BOOLEAN');
   // TODO: Assemble JavaScript into code variable.
   var code = dropdown_boolean;

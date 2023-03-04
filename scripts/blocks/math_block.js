@@ -1,17 +1,16 @@
 Blockly.Blocks['math'] = {
     init: function() {
         this.appendValueInput("1ConditionM")
-            .setCheck(["freeinput", "CONDITIONCHOOSER", "Number", 'MATH'])
+            .setCheck(["String", "CONDITIONCHOOSER", "Number", 'MATH'])
             .setAlign(Blockly.ALIGN_CENTRE);
         this.appendValueInput("2ConditionM")
-            .setCheck(["freeinput", "CONDITIONCHOOSER", "Number", 'MATH'])
+            .setCheck(["String", "CONDITIONCHOOSER", "Number", 'MATH'])
             .setAlign(Blockly.ALIGN_CENTRE)
             .appendField(new Blockly.FieldDropdown([["\u002B","plus"], ["\u002D","minus"], ["\u00D7","mul"], ["\u00F7","div"]]), "mathemator");
         this.setInputsInline(true);
         this.setOutput(true, ["MATH"]);
-        this.setColour(160);
-        this.setTooltip("");
-        this.setHelpUrl("");
+        this.setColour('%{BKY_LOGIC_HUE}');
+        this.setHelpUrl("https://www.w3schools.com/sql/sql_operators.asp");
     }
 };
 Blockly.JavaScript['math'] = function(block) {

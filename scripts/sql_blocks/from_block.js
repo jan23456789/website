@@ -6,7 +6,7 @@ Blockly.Blocks['from'] = {
     this.setInputsInline(false);
     this.setPreviousStatement(true, "statement");
     this.setNextStatement(true, "statement");
-    this.setColour(160);
+    this.setColour('%{BKY_LOOPS_HUE}');
  this.setTooltip("To be defined");
  this.setHelpUrl("To be defined");
   }

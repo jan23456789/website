@@ -8,22 +8,12 @@ Blockly.Blocks['in'] = {
         .appendField(new Blockly.FieldDropdown([["IN","IN"], ["NOT IN","NOT IN"]]), "IN");
     this.setInputsInline(true);
     this.setOutput(true, null);
-    this.setColour(160);
- this.setTooltip("");
- this.setHelpUrl("");
+    this.setColour('%{BKY_LOGIC_HUE}');
+ this.setHelpUrl("https://www.w3schools.com/sql/sql_in.asp");
   }
 };
 
 Blockly.JavaScript['in'] = function(block) {
-//   var value_input_rec = Blockly.JavaScript.valueToCode(block, 'input_rec', Blockly.JavaScript.ORDER_ATOMIC);
-//   var dropdown_in = block.getFieldValue('IN');
-//   var statements_input_rec_in = Blockly.JavaScript.statementToCode(block, 'input_rec_in');
-//   // TODO: Assemble JavaScript into code variable.
-//   var code = '...';
-//   // TODO: Change ORDER_NONE to the correct strength.
-//   return [code, Blockly.JavaScript.ORDER_NONE];
-// };
-// Blockly.JavaScript['innifier'] = function(block) {
   var OPERATORS = {
       'I': 'IN',
       'NI': 'NOT IN'

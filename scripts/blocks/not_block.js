@@ -10,8 +10,8 @@ Blockly.defineBlocksWithJsonArray([
             }
         ],
         "output": "NOT",//Condition of this Block defining, how this Block could be combined to previous Blocks
-        "colour": 160,
-        "helpUrl": "",
+        "colour": '%{BKY_LOGIC_HUE}',
+        "helpUrl": "https://www.w3schools.com/sql/sql_and_or.asp",
     },
 ]);// NOT-Block in Workspace
 Blockly.JavaScript['not'] = function(block) {

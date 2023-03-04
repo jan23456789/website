@@ -6,9 +6,8 @@ Blockly.Blocks['having'] = {
             .appendField("HAVING           ");
         this.setPreviousStatement(true, ['HAVING']);
         this.setNextStatement(true, ['HAVING', 'GROUP BY']);
-        this.setColour(160);
-        this.setTooltip("");
-        this.setHelpUrl("");
+        this.setColour('%{BKY_LOOPS_HUE}');
+        this.setHelpUrl("https://www.w3schools.com/sql/sql_having.asp");
         this.setInputsInline(true);
     }
 };

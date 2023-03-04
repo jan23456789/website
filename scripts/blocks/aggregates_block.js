@@ -6,14 +6,13 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "input_value",
                 "name": "min",
-                "check": ["CONDITIONCHOOSER", 'freeinput']
+                "check": ["CONDITIONCHOOSER", 'String']
             },
         ],
         "inputsInline": true,
         "output": 'aggregate_min',
-        "colour": 160,
-        "tooltip": "",
-        "helpUrl": "",
+        "colour": '%{BKY_MATH_HUE}',
+        "helpUrl": "https://www.w3schools.com/sql/sql_min_max.asp",
         "extensions": 'aggregate_Extensions'
     },
     {
@@ -23,14 +22,13 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "input_value",
                 "name": "avg",
-                "check": ["CONDITIONCHOOSER", 'freeinput']
+                "check": ["CONDITIONCHOOSER", 'String']
             }
         ],
         "inputsInline": true,
         "output": 'aggregate_avg',
-        "colour": 160,
-        "tooltip": "",
-        "helpUrl": "",
+        "colour": '%{BKY_MATH_HUE}',
+        "helpUrl": "https://www.w3schools.com/sql/sql_count_avg_sum.asp",
         "extensions": 'aggregate_Extensions'
     },
     {
@@ -40,14 +38,13 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "input_value",
                 "name": "max",
-                "check": ["CONDITIONCHOOSER", 'freeinput']
+                "check": ["CONDITIONCHOOSER", 'String']
             }
         ],
         "inputsInline": true,
         "output": 'aggregate_max',
-        "colour": 160,
-        "tooltip": "",
-        "helpUrl": "",
+        "colour": '%{BKY_MATH_HUE}',
+        "helpUrl": "https://www.w3schools.com/sql/sql_min_max.asp",
         "extensions": 'aggregate_Extensions'
     },
     {
@@ -57,14 +54,13 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "input_value",
                 "name": "sum",
-                "check": ["CONDITIONCHOOSER", 'freeinput', 'MATH']
+                "check": ["CONDITIONCHOOSER", 'String', 'MATH']
             }
         ],
         "inputsInline": true,
         "output": 'aggregate_sum',
-        "colour": 160,
-        "tooltip": "",
-        "helpUrl": "",
+        "colour": '%{BKY_MATH_HUE}',
+        "helpUrl": "https://www.w3schools.com/sql/sql_count_avg_sum.asp",
         "extensions": 'aggregate_Extensions'
     },
     {
@@ -74,14 +70,13 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "input_value",
                 "name": "count",
-                "check": ["CONDITIONCHOOSER", 'freeinput']
+                "check": ["CONDITIONCHOOSER", 'String']
             }
         ],
         "inputsInline": true,
         "output": 'aggregate_count',
-        "colour": 160,
-        "tooltip": "",
-        "helpUrl": "",
+        "colour": '%{BKY_MATH_HUE}',
+        "helpUrl": "https://www.w3schools.com/sql/sql_count_avg_sum.asp",
         "extensions": 'aggregate_Extensions'
     }
 ]);

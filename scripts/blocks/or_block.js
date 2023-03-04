@@ -18,9 +18,8 @@ Blockly.defineBlocksWithJsonArray([
             }
         ],
         "output": "OR",//Condition of this Block defining, how this Block could be combined to previous Blocks
-        "colour": 160,
-        "helpUrl": "",
-        //discarded: 18.09.2017 "mutator": "orMutator",//name of the Mutator (necessary for merging Mutator_Mixin into this Block)
+        "colour": '%{BKY_LOGIC_HUE}',
+        "helpUrl": "https://www.w3schools.com/sql/sql_and_or.asp",
     },
 ]);// OR-Block in Workspace
 Blockly.JavaScript['or'] = function(block) {

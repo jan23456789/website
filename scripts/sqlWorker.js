@@ -4,12 +4,14 @@ var errorElm = document.getElementById('error');
 var commandsElm = document.getElementById('commands');
 var dbFileElm = document.getElementById('dbfile');
 var allTablesElm = document.getElementById('demo');
-// var savedbElm = document.getElementById('savedb');
+var savedbElm = document.getElementById('savedb');
 
-var allTables = [['Auf Canvas ziehen','']];
+// Global variables for changes of Tables and Columns in the db file
+var allTables = [['Auf Canvas ziehen','Erst Datenbank hochladen']];
 var isFileChange = false;
 var fieldMapping = {};
 var iterator = 0;
+
 // Start the worker in which sql.js will run
 var worker = new Worker("scripts/worker.sql-wasm.js");
 worker.onerror = error;
@@ -21,20 +23,23 @@ worker.postMessage({ action: 'open' });
 function print(text) {
 	outputElm.innerHTML = text.replace(/\n/g, '<br>');
 }
+
+// Error Management
 function error(e) {
 	console.log(e);
 	errorElm.style.height = '2em';
 	errorElm.textContent = e.message;
 }
-
 function noerror() {
 	errorElm.style.height = '0';
 }
 
+// Make "allTables" accessable for initialization of blocks
 function getTables() {
 	return allTables;
 }
 
+// fill "allTables" with a list of all Tables in the db file (only onChangeFile)
 function getAllTables(result) {
 	const array = new Array(result[0].values.length);		
 	for (let i = 0; i < array.length; i++) {
@@ -47,6 +52,7 @@ function getAllTables(result) {
 	isFileChange = false;
 }
 
+// Update the mapping of fields per table in the dictionary "fieldMapping" (only onChangeFile)
 function updateFieldMapping() {
 	tic();
 		worker.onmessage = function (event) {
@@ -72,6 +78,7 @@ function updateFieldMapping() {
 		fieldMapping = {};
 }
 
+// Update Blocks on Workspace that are affected by a change of the db file
 function updateBlocks() {
 	var blocks = workspace.getAllBlocks();
 	blocks.forEach(block => {
@@ -83,13 +90,13 @@ function updateBlocks() {
 					block.setInputsInline(false);
 					block.setOutput(true, null);
 		}
-		if (block.type == "all_join") {
+		if (block.type == "join") {
 			if(block.getFieldValue('modifierActive') != 'Blank'){
 				block.removeInput("STATEMENT");
 				block.appendValueInput("STATEMENT")
 						.appendField(new Blockly.FieldDropdown([['\u2009', 'BLANKJ'], ['INNER', 'INNER'], ['LEFT', 'LEFT'], ['RIGHT', 'RIGHT']]), "chooseTableType")
 						.appendField('JOIN')
-						.appendField(new Blockly.FieldDropdown(getTables()), "chooseTableJoin2") //filltables ergänzen
+						.appendField(new Blockly.FieldDropdown(getTables()), "chooseTableJoin2")
 						.setCheck("COMPARE")
 						.appendField(new Blockly.FieldDropdown([['ON', 'onModifier'], ['\u2009', 'Blank']]), "modifierActive");
 			}else{
@@ -114,12 +121,14 @@ function execute(commands) {
 			error({message: event.data.error});
 			return;
 		}
-
 		tic();
 		outputElm.innerHTML = "";
 		if (isFileChange) {getAllTables(results);}
 		for (var i = 0; i < results.length; i++) {
 			outputElm.appendChild(tableCreate(results[i].columns, results[i].values));
+		}
+		if (results.length == 0) {
+			outputElm.appendChild(tableCreate(["Nothing found with your query"], [["..."]]));
 		}
 		toc("Displaying results");
 	}
@@ -182,7 +191,6 @@ dbFileElm.onchange = function () {
 	r.onload = function () {
 		worker.onmessage = function () {
 			toc("Loading database from file");
-			// Show the schema of the loaded database
 			editor.setValue("SELECT `name`, `sql`\n  FROM `sqlite_master`\n  WHERE type='table';");
 			execEditorContents();
 			isFileChange = true;

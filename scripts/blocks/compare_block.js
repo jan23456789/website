@@ -6,7 +6,7 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "input_value",
                 "name": "1ConditionC",
-                "check": ["DatePicker", "MATH", "CONDITIONCHOOSER", 'HAVING', 'Boolean', 'Number', 'freeinput', 'aggregate_min', 'aggregate_avg', 'aggregate_max', 'aggregate_sum', 'aggregate_count', 'datepicker'],
+                "check": ["DatePicker", "MATH", "CONDITIONCHOOSER", 'HAVING', 'Boolean', 'Number', 'String', 'aggregate_min', 'aggregate_avg', 'aggregate_max', 'aggregate_sum', 'aggregate_count', 'datepicker'],
             },
             {
                 "type": "field_dropdown",
@@ -24,46 +24,13 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "input_value",
                 "name": "2ConditionC",
-                "check": ["DatePicker", "MATH", "CONDITIONCHOOSER", 'Boolean', 'Number', 'freeinput', 'aggregate_min', 'aggregate_avg', 'aggregate_max', 'aggregate_sum', 'aggregate_count', 'datepicker'],
+                "check": ["DatePicker", "MATH", "CONDITIONCHOOSER", 'Boolean', 'Number', 'String', 'aggregate_min', 'aggregate_avg', 'aggregate_max', 'aggregate_sum', 'aggregate_count', 'datepicker'],
             }
         ],
         "inputsInline": true,
         "output": "COMPARE",
-        "colour": 160,
-        "helpUrl": "",
-        //"mutator": "compMutator",
-    },
-    {
-        "type": "compareDerived",
-        "message0": "%1    %2 %3",
-        "args0": [
-            {
-                "type": "input_value",
-                "name": "1ConditionCD",
-                "check": ['aggregate_AVG','aggregate_COUNT', 'aggregate_MAX', 'aggregate_MIN', 'aggregate_SUM', 'CONDITIONCHOOSER'],
-            },
-            {
-                "type": "field_dropdown",
-                "name": "OP",
-                "options": [
-                    ["=", "EQ"],
-                    ["\u2260", "NEQ"],
-                    ["<", "LT"],
-                    ["\u2264", "LTE"],
-                    [">", "GT"],
-                    ["\u2265", "GTE"],
-                ]
-            },
-            {
-                "type": "input_value",
-                "name": "2ConditionCD",
-                "check": ["MATH", "CONDITIONCHOOSER", 'Boolean', 'Number', 'freeinput'],
-            },
-        ],
-        "output": 'DERIVED',
-        "colour": 180,
-        "helpUrl": "%{BKY_LOGIC_COMPARE_HELPURL}",
-        "extensions": ["logic_compare", "logic_op_tooltip"],
+        "colour": '%{BKY_LOGIC_HUE}',
+        "helpUrl": "https://www.w3schools.com/sql/sql_operators.asp",
     }]);// COMPAREDERIVED-Block for HAVING in Workspace
 Blockly.NULLEXTEND = function() {
     this.getField('OP').setValidator(function(option) {
@@ -110,7 +77,7 @@ Blockly.COMPMUTATOR_MIXIN = {
             if (compareInput) {
                 if (!inputExists) {
                     this.appendValueInput('2ConditionC')
-                        .setCheck(["MATH", "CONDITIONCHOOSER", 'Boolean', 'Number', 'freeinput']);
+                        .setCheck(["MATH", "CONDITIONCHOOSER", 'Boolean', 'Number', 'String']);
                 }
             }
             else if (inputExists) {

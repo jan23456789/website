@@ -5,7 +5,7 @@ Blockly.Blocks['alias'] = {
         .appendField(new Blockly.FieldTextInput("alias"), "ALIAS");
     this.setInputsInline(false);
     this.setOutput(true, "alias");
-    this.setColour(160);
+    this.setColour('%{BKY_LISTS_HUE}');
  this.setTooltip("To be Defined");
  this.setHelpUrl("To be Defined");
   }

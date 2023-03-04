@@ -1,14 +1,13 @@
 Blockly.Blocks['orderby'] = {
     init: function() {
         this.appendValueInput('orderInput')
-            .setCheck(["CONDITIONCHOOSER", 'aggregate_min', 'aggregate_avg', 'aggregate_max', 'aggregate_sum', 'aggregate_count', 'freeinput'])
+            .setCheck(["CONDITIONCHOOSER", 'aggregate_min', 'aggregate_avg', 'aggregate_max', 'aggregate_sum', 'aggregate_count', 'String'])
             .setAlign(Blockly.ALIGN_LEFT)
             .appendField("ORDER BY        ");
         this.setPreviousStatement(true, ['GROUP BY', 'FROM']);
         this.setNextStatement(true, ['ORDER BY']);
-        this.setColour(160);
-        this.setTooltip("");
-        this.setHelpUrl("");
+        this.setColour('%{BKY_LOOPS_HUE}');
+        this.setHelpUrl("https://www.w3schools.com/sql/sql_orderby.asp");
     }
 };
 Blockly.JavaScript['orderby'] = function(block) {

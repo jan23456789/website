@@ -1,13 +1,13 @@
-Blockly.Blocks['lists_select'] = {
+Blockly.Blocks['from'] = {
   init: function() {
+    this.setHelpUrl("https://www.w3schools.com/sql/sql_ref_from.asp");
     this.setStyle('list_blocks');
     this.itemCount_ = 1;
     this.updateShape_();
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(160);
+    this.setPreviousStatement(true, ['lists_select']);
+    this.setNextStatement(true, ['WHERE', 'GROUP BY', 'FROM']);
+    this.setColour('%{BKY_LOOPS_HUE}');
     this.setMutator(new Blockly.Mutator(['lists_create_with_item']));
-    this.setTooltip(Blockly.Msg['LISTS_CREATE_WITH_TOOLTIP']);
   },
   mutationToDom: function() {
     var container = Blockly.utils.xml.createElement('mutation');
@@ -76,9 +76,8 @@ Blockly.Blocks['lists_select'] = {
       if (!this.getInput('ADD' + i)) {
         var input = this.appendValueInput('ADD' + i);
         if (i == 0) {
-          input.appendField("SELECT");
-          input.setCheck(['freeinput', "tablename_as", "ALL", "CONDITIONCHOOSER", "aggregate_min", "aggregate_max", "aggregate_avg", "aggregate_sum", "aggregate_count"]);
-          input.appendField(new Blockly.FieldDropdown([["\u2009", 'blank'], ["DISTINCT", 'distinct']]), 'option');
+          input.appendField("FROM");
+          input.setCheck(["TABLE", "AS"]);
         }
       }
     }
@@ -90,13 +89,37 @@ Blockly.Blocks['lists_select'] = {
   }
 };
 
-Blockly.JavaScript['lists_select'] = function(block) {
+Blockly.Blocks['lists_create_with_container'] = {
+  init: function() {
+    this.setStyle('list_blocks');
+    this.appendDummyInput()
+        .appendField("Attribute");
+    this.appendStatementInput('STACK');
+    this.setTooltip();
+    this.contextMenu = false;
+  }
+};
+
+Blockly.Blocks['lists_create_with_item'] = {
+  init: function() {
+    this.setStyle('list_blocks');
+    this.appendDummyInput()
+        .appendField("Attribut");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip("");
+    this.contextMenu = false;
+  }
+};
+
+Blockly.JavaScript['from'] = function(block) {
     var select = '';
     for (var i = 0; i < this.itemCount_; i++) {
         var current = 'ADD' + i;
         select += Blockly.JavaScript.statementToCode(block, current);
 
-        if(i != this.itemCount_-1) {
+        var next = i + 1;
+        if(i != this.itemCount_-1 && Blockly.JavaScript.statementToCode(block, 'ADD' + next) == false) {
           select += ', ';
         }
         else {
@@ -104,22 +127,7 @@ Blockly.JavaScript['lists_select'] = function(block) {
         }
     }
 
-    if(!select.includes(' *')){
-        select = select.substring(0,select.length-1);
-    }
-    else if(select.includes(' * ')){
-        select = select.substring(0,select.length-1);
-    }
-
-    var option = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('option'));
-    if(option == 'blank' || option == 'all'){
-        option = 'select ';
-    }
-    else{
-        option = 'select DISTINCT ';
-    }
-
-    var code = option + select;
+    var code = ' from ' + select;
 
     return code;
 }
