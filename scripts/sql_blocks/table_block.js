@@ -2,9 +2,9 @@ Blockly.Blocks['table'] = {
   init: function() {
     this.appendValueInput("TABLE")
         .setCheck(["column", "alias"])
-        .appendField(new Blockly.FieldDropdown(getAllRecords()), "TABLE");
-    this.setPreviousStatement(true, "table");
-    this.setNextStatement(true, "table");
+        .appendField(new Blockly.FieldDropdown(getTables()), "TABLE");
+        this.setInputsInline(false);
+        this.setOutput(true, null);
     this.setColour(230);
     this.setTooltip("To be defined");
     this.setHelpUrl("To be defined");

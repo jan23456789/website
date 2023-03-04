@@ -3,8 +3,13 @@ var outputElm = document.getElementById('output');
 var errorElm = document.getElementById('error');
 var commandsElm = document.getElementById('commands');
 var dbFileElm = document.getElementById('dbfile');
+var allTablesElm = document.getElementById('demo');
 // var savedbElm = document.getElementById('savedb');
 
+var allTables = [['Auf Canvas ziehen','']];
+var isFileChange = false;
+var fieldMapping = {};
+var iterator = 0;
 // Start the worker in which sql.js will run
 var worker = new Worker("scripts/worker.sql-wasm.js");
 worker.onerror = error;
@@ -26,6 +31,79 @@ function noerror() {
 	errorElm.style.height = '0';
 }
 
+function getTables() {
+	return allTables;
+}
+
+function getAllTables(result) {
+	const array = new Array(result[0].values.length);		
+	for (let i = 0; i < array.length; i++) {
+		array[i] = [result[0].values[i][0], result[0].values[i][0]];
+	}
+	array[array.length] = ['*', '*'];
+	allTables = array;
+	updateBlocks();
+	updateFieldMapping();
+	isFileChange = false;
+}
+
+function updateFieldMapping() {
+	tic();
+		worker.onmessage = function (event) {
+			var results = event.data.results;
+			toc("Executing SQL");
+			if (!results) {
+				return;
+			}
+			tic();
+			const array = new Array(results[0].values.length);
+			for (let i = 0; i < array.length; i++) {
+			  array[i] = [results[0].values[i][1], results[0].values[i][1]];
+			}
+			fieldMapping[allTables[iterator][0]] = array;
+			iterator++;
+		}
+		allTables.forEach(tableName => {
+			if (tableName[0] != '*'){
+				worker.postMessage({ action: 'exec', sql: `PRAGMA table_info(${tableName[0]});` });
+			}
+		});
+		iterator = 0;
+		fieldMapping = {};
+}
+
+function updateBlocks() {
+	var blocks = workspace.getAllBlocks();
+	blocks.forEach(block => {
+		if (block.type == "table") {
+			block.removeInput("TABLE");
+			block.appendValueInput("TABLE")
+					.setCheck(["column", "alias"])
+					.appendField(new Blockly.FieldDropdown(getTables()), "TABLE");
+					block.setInputsInline(false);
+					block.setOutput(true, null);
+		}
+		if (block.type == "all_join") {
+			if(block.getFieldValue('modifierActive') != 'Blank'){
+				block.removeInput("STATEMENT");
+				block.appendValueInput("STATEMENT")
+						.appendField(new Blockly.FieldDropdown([['\u2009', 'BLANKJ'], ['INNER', 'INNER'], ['LEFT', 'LEFT'], ['RIGHT', 'RIGHT']]), "chooseTableType")
+						.appendField('JOIN')
+						.appendField(new Blockly.FieldDropdown(getTables()), "chooseTableJoin2") //filltables ergänzen
+						.setCheck("COMPARE")
+						.appendField(new Blockly.FieldDropdown([['ON', 'onModifier'], ['\u2009', 'Blank']]), "modifierActive");
+			}else{
+				block.removeInput("STATEMENT");
+				block.appendValueInput("STATEMENT")
+						.appendField(new Blockly.FieldDropdown([['\u2009', 'BLANKJ'], ['INNER', 'INNER'], ['LEFT', 'LEFT'], ['RIGHT', 'RIGHT']]), "chooseTableType")
+						.appendField('JOIN')
+						.setCheck("tablename_as")
+						.appendField(new Blockly.FieldDropdown([['\u2009', 'Blank'], ['ON', 'onModifier']]), "modifierActive");
+			}
+		}
+	});
+}
+
 // Run a command in the database
 function execute(commands) {
 	tic();
@@ -39,6 +117,7 @@ function execute(commands) {
 
 		tic();
 		outputElm.innerHTML = "";
+		if (isFileChange) {getAllTables(results);}
 		for (var i = 0; i < results.length; i++) {
 			outputElm.appendChild(tableCreate(results[i].columns, results[i].values));
 		}
@@ -89,7 +168,7 @@ var editor = CodeMirror.fromTextArea(commandsElm, {
 	smartIndent: true,
 	lineNumbers: true,
 	matchBrackets: true,
-	autofocus: true,
+	autofocus: false,
 	extraKeys: {
 		"Ctrl-Enter": execEditorContents,
 		"Ctrl-S": savedb,
@@ -106,6 +185,7 @@ dbFileElm.onchange = function () {
 			// Show the schema of the loaded database
 			editor.setValue("SELECT `name`, `sql`\n  FROM `sqlite_master`\n  WHERE type='table';");
 			execEditorContents();
+			isFileChange = true;
 		};
 		tic();
 		try {

@@ -9,141 +9,101 @@
   <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
   <link rel="stylesheet" href="styles/index.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/codemirror.js"></script>
-
 </head>
 
-<body>
+<body> 
   <header>
     <h1 style="text-align: center;">S(cratch)QL</h1>
   </header>
-  <br><br>
-  <main>
-    <div id="blocklyDiv" style="height: 600px; width: 1200px; margin: auto;"></div>
-    <div style="width: 1200px; margin: auto;">
-      <button id="execute" class="button">Ausführen</button>
-      <label class="button">Lade eine SQLite Datenbank hoch: <input type='file' id='dbfile'></label>
-      <p style="margin: 0; display: inline;">Dein SQL Code:</p>
-
-      <textarea id="commands"></textarea>
-      <div id="error" class="error"></div>
-
-      <pre id="output">Hier wird das Ergebnis ausgegeben</pre>
-      <p></p>
-    </div>
-    <!-- <label class="button">Load an SQLite database file: <input type='file' id='dbfile'></label> -->
-  </main>
+    <div id="blocklyArea"></div>
+  <table id="coding"></table>
+    <tr>
+      <td>
+        <p style="margin: 0; display: inline;">SQL Code:</p>
+        <button id="execute" class="button">Ausführen</button>
+        <textarea id="commands" style="display: none;"> -- Ziehe Blöcke auf deinen Arbeitsplatz oder schreibe selbst Code</textarea>
+      </td>
+    </tr>
+  </table>
+  <div id="blocklyDiv" style="position: absolute"></div>
+  <div style="margin: auto;">
+    <label class="button">Lade eine SQLite Datenbank hoch: <input type='file' id='dbfile'></label>
+    <div id="error" class="error"></div>
+    <pre id="output">Hier wird das Ergebnis ausgegeben</pre>
+  </div>
 
   <div>
     <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
       <!-- <category name="SQL Statements" colour="#0066cc"> -->
-        <label text="Select:"></label>
-        <block type="select"></block>
-        <label text="Tabelle:"></label>
+        <!-- <label text="Select:"></label> -->
+        <!-- new -->
+        <block type="lists_select"></block>
+        <block type="lists_from"></block>
+        <block type="where"></block>
+        <block type="groupby"></block>
+        <block type="having"></block>
+        <block type="orderby"></block>
+        <block type="aggregate_min"></block>
+        <block type="aggregate_avg"></block>
+        <block type="aggregate_max"></block>
+        <block type="aggregate_sum"></block>
+        <block type="aggregate_count"></block>
+        <block type="bool_dropdown"></block>
+        <block type="integer"></block>
+        <block type="text_"></block>
+        <block type="in"></block>
+        <block type="and"></block>
+        <block type="tablename_as"></block>
+        <block type="compare"></block>
+        <block type="all_join"></block>
+        <block type="math"></block>
+        <block type="not"></block>
+        <block type="or"></block>
+        <block type="math_number"></block>
+
+        <!-- new -->
+        <!-- <label text="Tabelle:"></label> -->
         <block type="table"></block>
-        <label text="Tabellenfeld:"></label>
+        <!-- <label text="Tabellenfeld:"></label> -->
         <block type="column"></block>
-        <label text="Alias:"></label>
-        <block type="alias"></block>
-        <label text="From:"></label>
-        <block type="from"></block>
+        <!-- <label text="Alias:"></label> -->
+        <!-- <label text="From:"></label> -->
+        <!-- <block type="from"></block> -->
       <!-- </category> -->
     </xml>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.1/mode/sql/sql.min.js"></script>
   <script type="text/javascript" src="scripts/sqlWorker.js"></script>
-  <script type="text/javascript" src="scripts/main.js"></script>
   <script src="scripts/blockly/blockly_compressed.js"></script>
   <script src="scripts/blockly/blocks_compressed.js"></script>
   <script src="scripts/blockly/javascript_compressed.js"></script>
   <script src="scripts/blockly/de.js"></script>
-  <script src="scripts/sql_blocks/select_block.js"></script>
   <script src="scripts/sql_blocks/table_block.js"></script>
   <script src="scripts/sql_blocks/column_block.js"></script>
-  <script src="scripts/sql_blocks/alias_block.js"></script>
   <script src="scripts/sql_blocks/from_block.js"></script>
-  <script>
-    let workspace = Blockly.inject('blocklyDiv', 
-                                    {
-                                      media: 'https://unpkg.com/blockly/media/',
-                                      toolbox: document.getElementById('toolbox'),
-                                      scrollbars: false,
-                                      trashcan: true,
-                                      grid: {
-                                              spacing: 40,
-                                              length: 2,
-                                              colour: '#000000',
-                                              snap: false
-                                            },
-                                    });
+  <!-- new -->
+  <script src="scripts/new_blocks/lists_select.js"></script>
+  <script src="scripts/new_blocks/lists_from.js"></script>
+  <script src="scripts/new_blocks/where.js"></script>
+  <script src="scripts/new_blocks/group_by.js"></script>
+  <script src="scripts/new_blocks/having.js"></script>
+  <script src="scripts/new_blocks/order_by.js"></script>
+  <script src="scripts/new_blocks/aggregates.js"></script>
+  <script src="scripts/new_blocks/boolean_block.js"></script>
+  <script src="scripts/new_blocks/integer_block.js"></script>
+  <script src="scripts/new_blocks/text_block.js"></script>
+  <script src="scripts/new_blocks/in_block.js"></script>
+  <script src="scripts/new_blocks/and.js"></script>
+  <script src="scripts/new_blocks/as.js"></script>
+  <script src="scripts/new_blocks/compare.js"></script>
+  <script src="scripts/new_blocks/join.js"></script>
+  <script src="scripts/new_blocks/math.js"></script>
+  <script src="scripts/new_blocks/not.js"></script>
+  <script src="scripts/new_blocks/or.js"></script>
+  
+  <!-- new -->
 
-    function show_Code(){
-      Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-      let code = showCode()
-      document.getElementById('commands').innerHTML = code;
-      editor.setValue(showCode());
-    };     
+  <script type="text/javascript" src="scripts/main.js"></script>
 
-    function setToDefault(block,parentblock) {
-      block.removeInput('COLUMN');
-      block.appendValueInput("COLUMN")
-            .setCheck("alias")
-            .appendField(".")
-            .appendField(new Blockly.FieldDropdown([['Choose a Field...','PLEASESELECT']]), "COLUMN");
-    };
-
-    function getAssociatedColumn(block,parent){
-      if (!block||!parent) return;
-      let parentFieldValue = parent.getFieldValue('TABLE');
-      switch(parentFieldValue) {
-        case 'albums':
-          options = [['TABLE1_FIELD1','TABLE1_FIELD1'],['TABLE1_FIELD2','TABLE1_FIELD2'],['TABLE1_FIELD3','TABLE1_FIELD3']];
-          break;
-        case 'TABLE2':
-          options = [['TABLE2_FIELD1','TABLE2_FIELD1'],['TABLE2_FIELD2','TABLE2_FIELD2'],['TABLE2_FIELD3','TABLE2_FIELD3']];
-          break;         
-        case 'TABLE3':
-          options = [['TABLE3_FIELD1','TABLE3_FIELD1'],['TABLE3_FIELD2','TABLE3_FIELD2'],['TABLE3_FIELD3','TABLE3_FIELD3']];
-          break;    
-        case 'TABLE4':
-          options = [['TABLE4_FIELD1','TABLE4_FIELD1'],['TABLE4_FIELD2','TABLE4_FIELD2'],['TABLE4_FIELD3','TABLE4_FIELD3']];
-          break;       
-        default:
-          options = [['Choose a Field...','PLEASESELECT']];
-      }
-      block.removeInput('COLUMN');
-      block.appendValueInput("COLUMN")
-            .setCheck("alias")
-            .appendField(".")
-            .appendField(new Blockly.FieldDropdown(options), "COLUMN");
-      return;
-    };
-
-    function connectionChangeColumn(event) {
-      if (event.type != 'move') return;
-      let block = workspace.getBlockById(event.blockId);
-      if ((block.type != 'column')||!((event.oldParentId)||(event.newParentId))) return;
-      if (event.newParentId) {
-        getAssociatedColumn(block,workspace.getBlockById(event.newParentId));
-        return;
-      }
-      setToDefault(block,workspace.getBlockById(event.newParentId));
-    };
-
-    function tableBlockNewValue(event) {
-      if (event.type != 'change') return;
-      let block = workspace.getBlockById(event.blockId);
-      if (block.type != 'table'||event.newValue==event.oldValue) return;
-      getAssociatedColumn(block.getChildren(false)[0],block);
-    };
-
-    function onchange(event) {
-      connectionChangeColumn(event);
-      tableBlockNewValue(event);
-      show_Code();
-    };
-
-    workspace.addChangeListener(onchange);
-    onchange();
-  </script>
 </body>
 </html>
