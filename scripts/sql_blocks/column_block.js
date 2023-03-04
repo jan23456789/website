@@ -8,7 +8,7 @@ Blockly.Blocks['column'] = {
         .appendField(new Blockly.FieldDropdown(RecordArray), "COLUMN");
     this.setInputsInline(false);
     this.setOutput(true, "column"); 
-    this.setColour(230);
+    this.setColour(160);
     this.setTooltip("To be defined");
     this.setHelpUrl("To be defined");
   },

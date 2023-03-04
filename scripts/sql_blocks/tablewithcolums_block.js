@@ -7,7 +7,7 @@ Blockly.Blocks['tablecolumn'] = {
           .appendField(new Blockly.FieldDropdown([["Column 1","COLUMN1"]]), "COLUMN");
       this.setPreviousStatement(true, "table");
       this.setNextStatement(true, "table");
-      this.setColour(230);
+      this.setColour(160);
    this.setTooltip("To be defined");
    this.setHelpUrl("To be defined");
     }

@@ -5,7 +5,7 @@ Blockly.Blocks['table'] = {
         .appendField(new Blockly.FieldDropdown(getTables()), "TABLE");
         this.setInputsInline(false);
         this.setOutput(true, null);
-    this.setColour(230);
+    this.setColour(160);
     this.setTooltip("To be defined");
     this.setHelpUrl("To be defined");
   },

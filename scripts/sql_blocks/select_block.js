@@ -8,7 +8,7 @@ Blockly.Blocks['select'] = {
     this.setInputsInline(true);
     this.setPreviousStatement(true, "statement");
     this.setNextStatement(true, "statement");
-    this.setColour(180);
+    this.setColour(160);
  this.setTooltip("To be defined");
  this.setHelpUrl("To be defined");
   }
