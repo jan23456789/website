@@ -1,72 +1,46 @@
-Blockly.Blocks['join'] = {
+Blockly.Blocks["join"] = {
     init: function() {
         this.appendValueInput("STATEMENT")
-            .appendField(new Blockly.FieldDropdown([['\u2009', 'BLANKJ'], ['INNER', 'INNER'], ['LEFT', 'LEFT'], ['RIGHT', 'RIGHT']]), "chooseTableType")
-            .appendField('JOIN')
-            .appendField(new Blockly.FieldDropdown(getTables()), "chooseTableJoin2") //fill tables ergänzen
-            .setCheck("COMPARE")
-            .appendField(new Blockly.FieldDropdown([['ON', 'onModifier'], ['\u2009', 'Blank']]), "modifierActive");
-        this.setPreviousStatement(true, ['FROM']);
-        this.setNextStatement(true, ['WHERE', 'GROUP BY']);
-        this.setColour('%{BKY_LOOPS_HUE}');
+            .setCheck(null)
+            .appendField(new Blockly.FieldDropdown([["\u2009", ""], ["INNER", "INNER"], ["LEFT", "LEFT"], ["RIGHT", "RIGHT"]]), "joinType")
+            .appendField("JOIN")
+            .appendField(new Blockly.FieldDropdown(getTables()), "tableSelection")
+            .appendField(new Blockly.FieldDropdown([["ON", "ON"], ["\u2009", ""]]), "joinOn");    
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("%{BKY_LOOPS_HUE}");
         this.setHelpUrl("https://www.w3schools.com/sql/sql_join.asp");
         this.setOnChange(function(changeEvent){
-            if(this.getInput("STATEMENT") == null){
-                if(this.getFieldValue('modifierActive') != 'Blank'){
-                    this.removeInput("noSTATEMENT");
-                    this.appendValueInput("STATEMENT")
-                        .appendField(new Blockly.FieldDropdown([['\u2009', 'BLANKJ'], ['INNER', 'INNER'], ['LEFT', 'LEFT'], ['RIGHT', 'RIGHT']]), "chooseTableType")
-                        .appendField('JOIN')
-                        .appendField(new Blockly.FieldDropdown(getTables()), "chooseTableJoin2") //filltables ergänzen
-                        .setCheck("COMPARE")
-                        .appendField(new Blockly.FieldDropdown([['ON', 'onModifier'], ['\u2009', 'Blank']]), "modifierActive");
-                }
-            }
-            else{
-                if(this.getFieldValue('modifierActive') == 'Blank'){
-                    this.removeInput("STATEMENT");
-                    this.appendValueInput("noSTATEMENT")
-                        .appendField(new Blockly.FieldDropdown([['\u2009', 'BLANKJ'], ['INNER', 'INNER'], ['LEFT', 'LEFT'], ['RIGHT', 'RIGHT']]), "chooseTableType")
-                        .appendField('JOIN')
-                        .setCheck("tablename_as")
-                        .appendField(new Blockly.FieldDropdown([['\u2009', 'Blank'], ['ON', 'onModifier']]), "modifierActive");
-                }
-            }
+            swapStatement(this)
+            show_Code();
         });
     }
 };
-Blockly.JavaScript['join'] = function(block) {
-    var type = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('chooseTableType'));
-    if(type == 'BLANKJ'){
-        type = '';
+
+function swapStatement(block) {
+    if (block.getFieldValue("joinOn") == "") {
+        block.removeInput("STATEMENT");
+        block.appendValueInput("STATEMENT")
+            .setCheck(null)
+            .appendField(new Blockly.FieldDropdown([["\u2009", ""], ["INNER", "INNER"], ["LEFT", "LEFT"], ["RIGHT", "RIGHT"]]), "joinType")
+            .appendField("JOIN")
+            .appendField(new Blockly.FieldDropdown([["\u2009", ""], ["ON", "ON"]]), "joinOn");
+    } else if (block.getFieldValue("joinOn")=="ON") {
+        block.removeInput("STATEMENT");
+        block.appendValueInput("STATEMENT")
+            .setCheck(null)
+            .appendField(new Blockly.FieldDropdown([["\u2009", ""], ["INNER", "INNER"], ["LEFT", "LEFT"], ["RIGHT", "RIGHT"]]), "joinType")
+            .appendField("JOIN")
+            .appendField(new Blockly.FieldDropdown(getTables()), "tableSelection")
+            .appendField(new Blockly.FieldDropdown([["ON", "ON"], ["\u2009", ""]]), "joinOn");    
     }
-    var join = '';
-    var isModifierActive = '';
-    var statement = '';
-    var nostatement = '';
-    if(this.getInput('STATEMENT') != null){
-        join = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('chooseTableJoin2'));
-        statement = Blockly.JavaScript.statementToCode(block, 'STATEMENT');
-    }
-    else{
-        nostatement = Blockly.JavaScript.statementToCode(block, 'noSTATEMENT');
-    }
-    var code = type + ' join' + ' ';
-    if(this.getFieldValue('modifierActive') == 'onModifier'){
-        if(statement == ''){
-            code = code.concat('' + join + ' ' + 'on' + ' ');
-        }
-        else{
-            code = code.concat('' + join + ' ' + 'on' + statement + ' ');
-        }
-    }
-    else{
-        if(nostatement == ''){
-            code = code.concat('' + join + ' ');
-        }
-        else{
-            code = code.concat('' + join + ' ' + nostatement + ' ');
-        }
-    }
+};
+
+Blockly.JavaScript["join"] = function(block) {
+    var joinType = (block.getFieldValue("joinType")||(block.getFieldValue("joinType")!="")) ? ` ${block.getFieldValue("joinType")} ` : " ";
+    var tableSelection = (block.getFieldValue("tableSelection")) ? ` ${block.getFieldValue("tableSelection")}` : "";
+    var joinOn = (block.getFieldValue("joinOn")) ? ` ${block.getFieldValue("joinOn")}` : "";
+    var onSelection = (Blockly.JavaScript.statementToCode(block, "STATEMENT") != "") ? ` ${Blockly.JavaScript.statementToCode(block, "STATEMENT")}` : ` ${Blockly.JavaScript.statementToCode(block, "noSTATEMENT")}`;
+    var code = `${joinType}JOIN${tableSelection}${joinOn}${onSelection}`;
     return code;
 };

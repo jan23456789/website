@@ -6,14 +6,14 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "input_value",
                 "name": "min",
-                "check": ["CONDITIONCHOOSER", 'String']
+                "check": null
             },
         ],
         "inputsInline": true,
-        "output": 'aggregate_min',
-        "colour": '%{BKY_MATH_HUE}',
+        "output": "MIN",
+        "colour": "%{BKY_MATH_HUE}",
         "helpUrl": "https://www.w3schools.com/sql/sql_min_max.asp",
-        "extensions": 'aggregate_Extensions'
+        "extensions": ["aggregate_Extensions"]
     },
     {
         "type": "aggregate_avg",
@@ -22,14 +22,14 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "input_value",
                 "name": "avg",
-                "check": ["CONDITIONCHOOSER", 'String']
+                "check": null
             }
         ],
         "inputsInline": true,
-        "output": 'aggregate_avg',
-        "colour": '%{BKY_MATH_HUE}',
+        "output": "AVG",
+        "colour": "%{BKY_MATH_HUE}",
         "helpUrl": "https://www.w3schools.com/sql/sql_count_avg_sum.asp",
-        "extensions": 'aggregate_Extensions'
+        "extensions": ["aggregate_Extensions"]
     },
     {
         "type": "aggregate_max",
@@ -38,14 +38,14 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "input_value",
                 "name": "max",
-                "check": ["CONDITIONCHOOSER", 'String']
+                "check": null
             }
         ],
         "inputsInline": true,
-        "output": 'aggregate_max',
-        "colour": '%{BKY_MATH_HUE}',
+        "output": "MAX",
+        "colour": "%{BKY_MATH_HUE}",
         "helpUrl": "https://www.w3schools.com/sql/sql_min_max.asp",
-        "extensions": 'aggregate_Extensions'
+        "extensions": ["aggregate_Extensions"]
     },
     {
         "type": "aggregate_sum",
@@ -54,14 +54,14 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "input_value",
                 "name": "sum",
-                "check": ["CONDITIONCHOOSER", 'String', 'MATH']
+                "check": null
             }
         ],
         "inputsInline": true,
-        "output": 'aggregate_sum',
-        "colour": '%{BKY_MATH_HUE}',
+        "output": "SUM",
+        "colour": "%{BKY_MATH_HUE}",
         "helpUrl": "https://www.w3schools.com/sql/sql_count_avg_sum.asp",
-        "extensions": 'aggregate_Extensions'
+        "extensions": ["aggregate_Extensions"]
     },
     {
         "type": "aggregate_count",
@@ -70,245 +70,55 @@ Blockly.defineBlocksWithJsonArray([
             {
                 "type": "input_value",
                 "name": "count",
-                "check": ["CONDITIONCHOOSER", 'String']
+                "check": null
             }
         ],
         "inputsInline": true,
-        "output": 'aggregate_count',
-        "colour": '%{BKY_MATH_HUE}',
+        "output": "COUNT",
+        "colour": "%{BKY_MATH_HUE}",
         "helpUrl": "https://www.w3schools.com/sql/sql_count_avg_sum.asp",
-        "extensions": 'aggregate_Extensions'
+        "extensions": ["aggregate_Extensions"]
     }
 ]);
 
-Blockly.Extensions.register('aggregate_Extensions', function(){
+Blockly.Extensions.register("aggregate_Extensions", function(){
     this.setOnChange(function(changeEvent){
         var parent = this.getSurroundParent();
-        if(parent != null && parent.toString().includes('ORDER BY') && (this.getField('orderA') == null)){
-            this.appendDummyInput('listOrder').appendField(" ").appendField(new Blockly.FieldDropdown([["\u2009","BLANK"], ["ASC","ASC"], ["DESC","DESC"]]), "orderA")
+        if (parent) {
+            if ((parent.type == "orderby") && (!this.getField("orderOptions"))){
+                this.appendDummyInput("listOrder")
+                    .appendField(" ")
+                    .appendField(new Blockly.FieldDropdown([["\u2009",""], ["ASC","ASC"], ["DESC","DESC"]]), "orderOptions");
+                return;
+            }
         }
-        else if((parent == null || (!(parent.toString().includes('ORDER BY')))) && this.getField('orderA') != null){
-            this.removeInput('listOrder');
+        if (((!parent)||(parent.type != "orderby")) && this.getField("orderOptions")){
+            this.removeInput("listOrder");
         }
     })
 });
-Blockly.JavaScript['aggregate_min'] = function(block) {
-    var argument = Blockly.JavaScript.statementToCode(block, 'min');
-    argument = argument.substring(0, argument.length);
-    argument = argument.trim();
-    var code = 'min(';
-    if(argument.includes(',')){
-        argument = argument.replace(',', '),');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', max')){
-        argument = argument.replace(', max', ') max');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', avg')){
-        argument = argument.replace(', avg', ') avg');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', max')){
-        argument = argument.replace(', max', ') max');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', sum')){
-        argument = argument.replace(', sum', ') sum');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', count')){
-        argument = argument.replace(', count', ') count');
-        code = code.concat(argument);
-    }
-    else{
-        code = 'min(' + argument + ') ';
-    }
-
-    //parent is ORDER BY?!:
-    var chosenOrderA = '';
-    if(this.getInput('listOrder')){
-        chosenOrderA = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('orderA'));
-        if(chosenOrderA == 'BLANK'){
-            chosenOrderA = '';
-        }
-        code = code.concat(' ' + chosenOrderA);
-    }
-    return code;
+Blockly.JavaScript["aggregate_min"] = function(block) {
+    return getAggregateCode(block,"MIN");
 };
 
-Blockly.JavaScript['aggregate_avg'] = function(block) {
-    var argument = Blockly.JavaScript.statementToCode(block, 'avg');
-    argument = argument.substring(0, argument.length);
-    argument = argument.trim();
-    var code = 'avg(';
-    if(argument.includes(',')){
-        argument = argument.replace(',', '),');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', max')){
-        argument = argument.replace(', max', ') max');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', min')){
-        argument = argument.replace(', min', ') min');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', max')){
-        argument = argument.replace(', max', ') max');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', sum')){
-        argument = argument.replace(', sum', ') sum');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', count')){
-        argument = argument.replace(', count', ') count');
-        code = code.concat(argument);
-    }
-    else{
-        code = 'avg(' + argument + ') ';
-    }
-
-    var chosenOrderA = '';
-    if(this.getInput('listOrder')){
-        chosenOrderA = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('orderA'));
-        if(chosenOrderA == 'BLANK'){
-            chosenOrderA = '';
-        }
-        code = code.concat(' ' + chosenOrderA);
-    }
-    return code;
+Blockly.JavaScript["aggregate_max"] = function(block) {
+    return getAggregateCode(block,"MAX");
 };
 
-Blockly.JavaScript['aggregate_max'] = function(block) {
-    var argument = Blockly.JavaScript.statementToCode(block, 'max');
-    argument = argument.substring(0, argument.length);
-    argument = argument.trim();
-    var code = 'max(';
-    if(argument.includes(',')){
-        argument = argument.replace(',', '),');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', min')){
-        argument = argument.replace(', min', ') min');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', avg')){
-        argument = argument.replace(', avg', ') avg');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', max')){
-        argument = argument.replace(', max', ') max');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', sum')){
-        argument = argument.replace(', sum', ') sum');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', count')){
-        argument = argument.replace(', count', ') count');
-        code = code.concat(argument);
-    }
-    else{
-        code = 'max(' + argument + ') ';
-    }
-
-    var chosenOrderA = '';
-    if(this.getInput('listOrder')){
-        chosenOrderA = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('orderA'));
-        if(chosenOrderA == 'BLANK'){
-            chosenOrderA = '';
-        }
-        code = code.concat(' ' + chosenOrderA);
-    }
-    return code;
+Blockly.JavaScript["aggregate_sum"] = function(block) {
+    return getAggregateCode(block,"SUM");
 };
 
-Blockly.JavaScript['aggregate_sum'] = function(block) {
-    var argument = Blockly.JavaScript.statementToCode(block, 'sum');
-    argument = argument.substring(0, argument.length);
-    argument = argument.trim();
-    var code = 'sum(';
-    if(argument.includes(',')){
-        argument = argument.replace(',', '),');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', max')){
-        argument = argument.replace(', max', ') max');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', avg')){
-        argument = argument.replace(', avg', ') avg');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', max')){
-        argument = argument.replace(', max', ') max');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', min')){
-        argument = argument.replace(', min', ') min');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', count')){
-        argument = argument.replace(', count', ') count');
-        code = code.concat(argument);
-    }
-    else{
-        code = 'sum(' + argument + ') ';
-    }
-
-    var chosenOrderA = '';
-    if(this.getInput('listOrder')){
-        chosenOrderA = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('orderA'));
-        if(chosenOrderA == 'BLANK'){
-            chosenOrderA = '';
-        }
-        code = code.concat(' ' + chosenOrderA);
-    }
-    return code;
+Blockly.JavaScript["aggregate_count"] = function(block) {
+    return getAggregateCode(block,"COUNT");
 };
 
-Blockly.JavaScript['aggregate_count'] = function(block) {
-    var argument = Blockly.JavaScript.statementToCode(block, 'count');
-    argument = argument.substring(0, argument.length);
-    argument = argument.trim();
-    var code = 'count(';
-    if(argument.includes(',')){
-        argument = argument.replace(',', '),');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', max')){
-        argument = argument.replace(', max', ') max');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', avg')){
-        argument = argument.replace(', avg', ') avg');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', max')){
-        argument = argument.replace(', max', ') max');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', sum')){
-        argument = argument.replace(', sum', ') sum');
-        code = code.concat(argument);
-    }
-    else if(argument.includes(', min')){
-        argument = argument.replace(', min', ') min');
-        code = code.concat(argument);
-    }
-    else{
-        code = 'count(' + argument + ') ';
-    }
+Blockly.JavaScript["aggregate_avg"] = function(block) {
+    return getAggregateCode(block,"AVG");
+};
 
-    var chosenOrderA = '';
-    if(this.getInput('listOrder')){
-        chosenOrderA = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('orderA'));
-        if(chosenOrderA == 'BLANK'){
-            chosenOrderA = '';
-        }
-        code = code.concat(' ' + chosenOrderA);
-    }
-    return code;
+function getAggregateCode(block,aggregateName) {
+    var argument = Blockly.JavaScript.statementToCode(block, aggregateName).trim();
+    var orderOption = (block.getFieldValue("orderOptions")||(block.getFieldValue("orderOptions")!="")) ? ` ${block.getFieldValue("orderOptions")}`: "";
+    return aggregateName+"("+argument+")"+orderOption;
 };

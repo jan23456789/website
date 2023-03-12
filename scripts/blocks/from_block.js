@@ -1,29 +1,29 @@
-Blockly.Blocks['from'] = {
+Blockly.Blocks["from"] = {
   init: function() {
     this.setHelpUrl("https://www.w3schools.com/sql/sql_ref_from.asp");
-    this.setStyle('list_blocks');
+    this.setStyle("list_blocks");
     this.itemCount_ = 1;
     this.updateShape_();
-    this.setPreviousStatement(true, ['lists_select']);
-    this.setNextStatement(true, ['WHERE', 'GROUP BY', 'FROM']);
-    this.setColour('%{BKY_LOOPS_HUE}');
-    this.setMutator(new Blockly.Mutator(['lists_create_with_item']));
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour("%{BKY_LOOPS_HUE}");
+    this.setMutator(new Blockly.Mutator(["lists_create_with_item"]));
   },
   mutationToDom: function() {
-    var container = Blockly.utils.xml.createElement('mutation');
-    container.setAttribute('items', this.itemCount_);
+    var container = Blockly.utils.xml.createElement("mutation");
+    container.setAttribute("items", this.itemCount_);
     return container;
   },
   domToMutation: function(xmlElement) {
-    this.itemCount_ = parseInt(xmlElement.getAttribute('items'), 10);
+    this.itemCount_ = parseInt(xmlElement.getAttribute("items"), 10);
     this.updateShape_();
   },
   decompose: function(workspace) {
-    var containerBlock = workspace.newBlock('lists_create_with_container');
+    var containerBlock = workspace.newBlock("lists_create_with_container");
     containerBlock.initSvg();
-    var connection = containerBlock.getInput('STACK').connection;
+    var connection = containerBlock.getInput("STACK").connection;
     for (var i = 0; i < this.itemCount_; i++) {
-      var itemBlock = workspace.newBlock('lists_create_with_item');
+      var itemBlock = workspace.newBlock("lists_create_with_item");
       itemBlock.initSvg();
       connection.connect(itemBlock.previousConnection);
       connection = itemBlock.nextConnection;
@@ -31,7 +31,7 @@ Blockly.Blocks['from'] = {
     return containerBlock;
   },
   compose: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
+    var itemBlock = containerBlock.getInputTargetBlock("STACK");
     // Count number of inputs.
     var connections = [];
     while (itemBlock) {
@@ -39,9 +39,9 @@ Blockly.Blocks['from'] = {
       itemBlock = itemBlock.nextConnection &&
           itemBlock.nextConnection.targetBlock();
     }
-    // Disconnect any children that don't belong.
+    // Disconnect any children that don"t belong.
     for (var i = 0; i < this.itemCount_; i++) {
-      var connection = this.getInput('ADD' + i).connection.targetConnection;
+      var connection = this.getInput("ADD" + i).connection.targetConnection;
       if (connection && connections.indexOf(connection) == -1) {
         connection.disconnect();
       }
@@ -50,14 +50,14 @@ Blockly.Blocks['from'] = {
     this.updateShape_();
     // Reconnect any child blocks.
     for (var i = 0; i < this.itemCount_; i++) {
-      Blockly.Mutator.reconnect(connections[i], this, 'ADD' + i);
+      Blockly.Mutator.reconnect(connections[i], this, "ADD" + i);
     }
   },
   saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
+    var itemBlock = containerBlock.getInputTargetBlock("STACK");
     var i = 0;
     while (itemBlock) {
-      var input = this.getInput('ADD' + i);
+      var input = this.getInput("ADD" + i);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       i++;
       itemBlock = itemBlock.nextConnection &&
@@ -65,69 +65,62 @@ Blockly.Blocks['from'] = {
     }
   },
   updateShape_: function() {
-    if (this.itemCount_ && this.getInput('EMPTY')) {
-      this.removeInput('EMPTY');
-    } else if (!this.itemCount_ && !this.getInput('EMPTY')) {
-      this.appendDummyInput('EMPTY')
-          .appendField(Blockly.Msg['LISTS_CREATE_EMPTY_TITLE']);
+    if (this.itemCount_ && this.getInput("EMPTY")) {
+      this.removeInput("EMPTY");
+    } else if (!this.itemCount_ && !this.getInput("EMPTY")) {
+      this.appendDummyInput("EMPTY")
+          .appendField(Blockly.Msg["LISTS_CREATE_EMPTY_TITLE"]);
     }
     // Add new inputs.
     for (var i = 0; i < this.itemCount_; i++) {
-      if (!this.getInput('ADD' + i)) {
-        var input = this.appendValueInput('ADD' + i);
+      if (!this.getInput("ADD" + i)) {
+        var input = this.appendValueInput("ADD" + i);
         if (i == 0) {
           input.appendField("FROM");
-          input.setCheck(["TABLE", "AS"]);
+          input.setCheck(null);
         }
       }
     }
     // Remove deleted inputs.
-    while (this.getInput('ADD' + i)) {
-      this.removeInput('ADD' + i);
+    while (this.getInput("ADD" + i)) {
+      this.removeInput("ADD" + i);
       i++;
     }
   }
 };
 
-Blockly.Blocks['lists_create_with_container'] = {
+Blockly.Blocks["lists_create_with_container"] = {
   init: function() {
-    this.setStyle('list_blocks');
+    this.setStyle("list_blocks");
     this.appendDummyInput()
         .appendField("Attribute");
-    this.appendStatementInput('STACK');
+    this.appendStatementInput("STACK");
     this.setTooltip();
     this.contextMenu = false;
+    this.setColour("%{BKY_LOOPS_HUE}");
   }
 };
 
-Blockly.Blocks['lists_create_with_item'] = {
+Blockly.Blocks["lists_create_with_item"] = {
   init: function() {
-    this.setStyle('list_blocks');
+    this.setStyle("list_blocks");
     this.appendDummyInput()
         .appendField("Attribut");
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip("");
     this.contextMenu = false;
+    this.setColour("%{BKY_LOOPS_HUE}");
   }
 };
 
-Blockly.JavaScript['from'] = function(block) {
-    var select = '';
+Blockly.JavaScript["from"] = function(block) {
+    var code = "";
     for (var i = 0; i < this.itemCount_; i++) {
-        var current = 'ADD' + i;
-        select += Blockly.JavaScript.statementToCode(block, current);
-
-        var next = i + 1;
-        if(i != this.itemCount_-1 && Blockly.JavaScript.statementToCode(block, 'ADD' + next) == false) {
-          select += ', ';
-        }
-        else {
-          select += ' ';
-        }
+      code += Blockly.JavaScript.statementToCode(block, ("ADD" + i));
+      if ((i != this.itemCount_-1) && Blockly.JavaScript.statementToCode(block, ("ADD" + (i+1)))) {
+        code += ",";
+      }
     }
-
-    var code = ' from ' + select;
-
-    return code;
-}
+    return "\nFROM " + code;
+};

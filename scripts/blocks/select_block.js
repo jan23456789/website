@@ -1,29 +1,29 @@
-Blockly.Blocks['select'] = {
+Blockly.Blocks["select"] = {
   init: function() {
-    this.setStyle('list_blocks');
+    this.setStyle("list_blocks");
     this.itemCount_ = 1;
     this.updateShape_();
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour('%{BKY_LOOPS_HUE}');
-    this.setMutator(new Blockly.Mutator(['lists_create_with_item']));
+    this.setColour("%{BKY_LOOPS_HUE}");
+    this.setMutator(new Blockly.Mutator(["lists_create_with_item"]));
     this.setHelpUrl("https://www.w3schools.com/sql/sql_select.asp");
   },
   mutationToDom: function() {
-    var container = Blockly.utils.xml.createElement('mutation');
-    container.setAttribute('items', this.itemCount_);
+    var container = Blockly.utils.xml.createElement("mutation");
+    container.setAttribute("items", this.itemCount_);
     return container;
   },
   domToMutation: function(xmlElement) {
-    this.itemCount_ = parseInt(xmlElement.getAttribute('items'), 10);
+    this.itemCount_ = parseInt(xmlElement.getAttribute("items"), 10);
     this.updateShape_();
   },
   decompose: function(workspace) {
-    var containerBlock = workspace.newBlock('lists_create_with_container');
+    var containerBlock = workspace.newBlock("lists_create_with_container");
     containerBlock.initSvg();
-    var connection = containerBlock.getInput('STACK').connection;
+    var connection = containerBlock.getInput("STACK").connection;
     for (var i = 0; i < this.itemCount_; i++) {
-      var itemBlock = workspace.newBlock('lists_create_with_item');
+      var itemBlock = workspace.newBlock("lists_create_with_item");
       itemBlock.initSvg();
       connection.connect(itemBlock.previousConnection);
       connection = itemBlock.nextConnection;
@@ -31,7 +31,7 @@ Blockly.Blocks['select'] = {
     return containerBlock;
   },
   compose: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
+    var itemBlock = containerBlock.getInputTargetBlock("STACK");
     // Count number of inputs.
     var connections = [];
     while (itemBlock) {
@@ -39,9 +39,9 @@ Blockly.Blocks['select'] = {
       itemBlock = itemBlock.nextConnection &&
           itemBlock.nextConnection.targetBlock();
     }
-    // Disconnect any children that don't belong.
+    // Disconnect any children that don"t belong.
     for (var i = 0; i < this.itemCount_; i++) {
-      var connection = this.getInput('ADD' + i).connection.targetConnection;
+      var connection = this.getInput("ADD" + i).connection.targetConnection;
       if (connection && connections.indexOf(connection) == -1) {
         connection.disconnect();
       }
@@ -50,14 +50,14 @@ Blockly.Blocks['select'] = {
     this.updateShape_();
     // Reconnect any child blocks.
     for (var i = 0; i < this.itemCount_; i++) {
-      Blockly.Mutator.reconnect(connections[i], this, 'ADD' + i);
+      Blockly.Mutator.reconnect(connections[i], this, "ADD" + i);
     }
   },
   saveConnections: function(containerBlock) {
-    var itemBlock = containerBlock.getInputTargetBlock('STACK');
+    var itemBlock = containerBlock.getInputTargetBlock("STACK");
     var i = 0;
     while (itemBlock) {
-      var input = this.getInput('ADD' + i);
+      var input = this.getInput("ADD" + i);
       itemBlock.valueConnection_ = input && input.connection.targetConnection;
       i++;
       itemBlock = itemBlock.nextConnection &&
@@ -65,61 +65,37 @@ Blockly.Blocks['select'] = {
     }
   },
   updateShape_: function() {
-    if (this.itemCount_ && this.getInput('EMPTY')) {
-      this.removeInput('EMPTY');
-    } else if (!this.itemCount_ && !this.getInput('EMPTY')) {
-      this.appendDummyInput('EMPTY')
-          .appendField(Blockly.Msg['LISTS_CREATE_EMPTY_TITLE']);
+    if (this.itemCount_ && this.getInput("EMPTY")) {
+      this.removeInput("EMPTY");
+    } else if (!this.itemCount_ && !this.getInput("EMPTY")) {
+      this.appendDummyInput("EMPTY")
+          .appendField(Blockly.Msg["LISTS_CREATE_EMPTY_TITLE"]);
     }
     // Add new inputs.
     for (var i = 0; i < this.itemCount_; i++) {
-      if (!this.getInput('ADD' + i)) {
-        var input = this.appendValueInput('ADD' + i);
+      if (!this.getInput("ADD" + i)) {
+        var input = this.appendValueInput("ADD" + i);
         if (i == 0) {
           input.appendField("SELECT");
-          input.setCheck(['String', "AS", "ALL", "CONDITIONCHOOSER", "aggregate_min", "aggregate_max", "aggregate_avg", "aggregate_sum", "aggregate_count", "TABLE"]);
-          input.appendField(new Blockly.FieldDropdown([["\u2009", 'blank'], ["DISTINCT", 'distinct']]), 'option');
+          input.setCheck(null);
+          input.appendField(new Blockly.FieldDropdown([["\u2009", ""], ["DISTINCT", "DISTINCT"]]), "option");
         }
       }
     }
     // Remove deleted inputs.
-    while (this.getInput('ADD' + i)) {
-      this.removeInput('ADD' + i);
+    while (this.getInput("ADD" + i)) {
+      this.removeInput("ADD" + i);
       i++;
     }
   }
 };
 
-Blockly.JavaScript['select'] = function(block) {
-    var select = '';
+Blockly.JavaScript["select"] = function(block) {
+    var select = "";
     for (var i = 0; i < this.itemCount_; i++) {
-        var current = 'ADD' + i;
-        select += Blockly.JavaScript.statementToCode(block, current);
-
-        if(i != this.itemCount_-1) {
-          select += ', ';
-        }
-        else {
-          select += ' ';
-        }
+        var current = "ADD" + i;
+        select += (i != this.itemCount_-1) ? `${Blockly.JavaScript.statementToCode(block, current)}, ` : `${Blockly.JavaScript.statementToCode(block, current)}`;
     }
-
-    if(!select.includes(' *')){
-        select = select.substring(0,select.length-1);
-    }
-    else if(select.includes(' * ')){
-        select = select.substring(0,select.length-1);
-    }
-
-    var option = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('option'));
-    if(option == 'blank' || option == 'all'){
-        option = 'select ';
-    }
-    else{
-        option = 'select DISTINCT ';
-    }
-
-    var code = option + select;
-
-    return code;
-}
+    var option = (Blockly.JavaScript.variableDB_.getName(block.getFieldValue("option"))=="") ? "SELECT " : "SELECT DISTINCT ";
+    return option + select;
+};

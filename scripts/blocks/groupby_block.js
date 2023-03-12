@@ -1,16 +1,16 @@
-Blockly.Blocks['groupby'] = {
+Blockly.Blocks["groupby"] = {
     init: function() {
-        this.appendValueInput('groupInput')
-            .setCheck(['String', "CONDITIONCHOOSER"])
+        this.appendValueInput("groupBy")
+            .setCheck(null)
             .setAlign(Blockly.ALIGN_LEFT)
             .appendField("GROUP BY ");
-        this.setPreviousStatement(true, ['WHERE', 'FROM']);
-        this.setNextStatement(true, ['GROUP BY', 'HAVING']);
-        this.setColour('%{BKY_LOOPS_HUE}');
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("%{BKY_LOOPS_HUE}");
         this.setHelpUrl("https://www.w3schools.com/sql/sql_groupby.asp");
     }
 };
-Blockly.JavaScript['groupby'] = function(block) {
-    var code = Blockly.JavaScript.statementToCode(block, 'groupInput');
-    return 'group by ' + code + ';';
-}
+Blockly.JavaScript["groupby"] = function(block) {
+    var code = Blockly.JavaScript.statementToCode(block, "groupInput");
+    return "GROUP BY " + Blockly.JavaScript.statementToCode(block, "groupInput");
+};

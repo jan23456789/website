@@ -1,16 +1,16 @@
-Blockly.Blocks['where'] = {
+Blockly.Blocks["where"] = {
     init: function() {
-        this.appendValueInput('whereInput')
-            .setCheck(['BETWEEN', 'AND', 'OR', 'COMPARE', 'TBALE', 'IN', 'NOT', 'String'])
+        this.appendValueInput("where")
+            .setCheck(null)
             .setAlign(Blockly.ALIGN_LEFT)
-            .appendField("WHERE                 ");
-        this.setPreviousStatement(true, ['FROM']);
-        this.setNextStatement(true, ['WHERE', 'GROUP BY']);
-        this.setColour('%{BKY_LOOPS_HUE}');
+            .appendField("WHERE ");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("%{BKY_LOOPS_HUE}");
         this.setHelpUrl("https://www.w3schools.com/sql/sql_where.asp");
     }
 };
-Blockly.JavaScript['where'] = function(block) {
-    var code = Blockly.JavaScript.statementToCode(block, 'whereInput');
-    return 'where ' + code + ';';
-}
+
+Blockly.JavaScript["where"] = function(block) {
+    return `WHERE ${Blockly.JavaScript.statementToCode(block, "where")}`;
+};

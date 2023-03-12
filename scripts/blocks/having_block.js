@@ -1,17 +1,17 @@
-Blockly.Blocks['having'] = {
+Blockly.Blocks["having"] = {
     init: function() {
-        this.appendValueInput('haveInput')
-            .setCheck(["COMPARE"])
+        this.appendValueInput("having")
+            .setCheck(null)
             .setAlign(Blockly.ALIGN_LEFT)
-            .appendField("HAVING           ");
-        this.setPreviousStatement(true, ['HAVING']);
-        this.setNextStatement(true, ['HAVING', 'GROUP BY']);
-        this.setColour('%{BKY_LOOPS_HUE}');
+            .appendField("HAVING ");
+        this.setPreviousStatement(true, null);
+        this.setNextStatement(true, null);
+        this.setColour("%{BKY_LOOPS_HUE}");
         this.setHelpUrl("https://www.w3schools.com/sql/sql_having.asp");
-        this.setInputsInline(true);
+        this.setInputsInline(false);
     }
 };
-Blockly.JavaScript['having'] = function(block) {
-    var code = Blockly.JavaScript.statementToCode(block, 'haveInput');
-    return 'having ' + code + ';';
-}
+
+Blockly.JavaScript["having"] = function(block) {
+    return `HAVING ${Blockly.JavaScript.statementToCode(block, "having")}`;
+};

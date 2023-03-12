@@ -1,14 +1,13 @@
-Blockly.Blocks['integer'] = {
+Blockly.Blocks["integer"] = {
   init: function() {
     this.appendDummyInput()
         .appendField(new Blockly.FieldNumber(0, -2147483647, 2147483647), "INT");
     this.setInputsInline(false);
-    this.setOutput(true, "Number");
-    this.setColour('%{BKY_TEXTS_HUE}');
+    this.setOutput(true, "NUMBER");
+    this.setColour("%{BKY_TEXTS_HUE}");
   }
 };
 
-Blockly.JavaScript['integer'] = function(block) {
-  var code = block.getFieldValue('INT').toString();
-  return code;
+Blockly.JavaScript["integer"] = function(block) {
+  return block.getFieldValue("INT").toString();
 };

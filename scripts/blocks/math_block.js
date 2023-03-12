@@ -1,29 +1,22 @@
-Blockly.Blocks['math'] = {
+Blockly.Blocks["math"] = {
     init: function() {
-        this.appendValueInput("1ConditionM")
-            .setCheck(["String", "CONDITIONCHOOSER", "Number", 'MATH'])
+        this.appendValueInput("Condition1")
+            .setCheck(null)
             .setAlign(Blockly.ALIGN_CENTRE);
-        this.appendValueInput("2ConditionM")
-            .setCheck(["String", "CONDITIONCHOOSER", "Number", 'MATH'])
+        this.appendValueInput("Condition2")
+            .setCheck(null)
             .setAlign(Blockly.ALIGN_CENTRE)
-            .appendField(new Blockly.FieldDropdown([["\u002B","plus"], ["\u002D","minus"], ["\u00D7","mul"], ["\u00F7","div"]]), "mathemator");
+            .appendField(new Blockly.FieldDropdown([["+","+"], ["-","-"], ["*","*"], ["/","/"]]), "math");
         this.setInputsInline(true);
-        this.setOutput(true, ["MATH"]);
-        this.setColour('%{BKY_LOGIC_HUE}');
+        this.setOutput(true, "MATHCOMPARE");
+        this.setColour("%{BKY_LOGIC_HUE}");
         this.setHelpUrl("https://www.w3schools.com/sql/sql_operators.asp");
     }
 };
-Blockly.JavaScript['math'] = function(block) {
-    var OPERATORS = {
-        'plus': '\u002B',
-        'minus': '\u002D',
-        'mul': "*",
-        'div': "/",
-    };
-    var operator = OPERATORS[block.getFieldValue('mathemator')];
-    var argument0 = Blockly.JavaScript.statementToCode(block, '1ConditionM');
-    argument0 = argument0.trim();
-    var argument1 = Blockly.JavaScript.statementToCode(block, '2ConditionM');
-    var code = '(' + argument0 + ' ' + operator + ' ' + argument1 + ')';
-    return code;
+
+Blockly.JavaScript["math"] = function(block) {
+    var operator = block.getFieldValue("math");
+    var argument0 = Blockly.JavaScript.statementToCode(block, "Condition1").trim();
+    var argument1 = Blockly.JavaScript.statementToCode(block, "Condition2").trim();
+    return `(${argument0} ${operator} ${argument1})`;
 };
