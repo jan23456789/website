@@ -12,5 +12,5 @@ Blockly.Blocks["orderby"] = {
 };
 
 Blockly.JavaScript["orderby"] = function(block) {
-    return `ORDER BY ${Blockly.JavaScript.statementToCode(block, "orderInput")}`;
+    return `\nORDER BY ${Blockly.JavaScript.statementToCode(block, "orderInput")}`;
 };

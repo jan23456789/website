@@ -13,5 +13,5 @@ Blockly.Blocks["having"] = {
 };
 
 Blockly.JavaScript["having"] = function(block) {
-    return `HAVING ${Blockly.JavaScript.statementToCode(block, "having")}`;
+    return `\nHAVING ${Blockly.JavaScript.statementToCode(block, "having")}`;
 };

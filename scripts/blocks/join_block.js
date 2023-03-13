@@ -41,6 +41,6 @@ Blockly.JavaScript["join"] = function(block) {
     var tableSelection = (block.getFieldValue("tableSelection")) ? ` ${block.getFieldValue("tableSelection")}` : "";
     var joinOn = (block.getFieldValue("joinOn")) ? ` ${block.getFieldValue("joinOn")}` : "";
     var onSelection = (Blockly.JavaScript.statementToCode(block, "STATEMENT") != "") ? ` ${Blockly.JavaScript.statementToCode(block, "STATEMENT")}` : ` ${Blockly.JavaScript.statementToCode(block, "noSTATEMENT")}`;
-    var code = `${joinType}JOIN${tableSelection}${joinOn}${onSelection}`;
+    var code = `\n${joinType}JOIN${tableSelection}${joinOn}${onSelection}`;
     return code;
 };

@@ -12,5 +12,5 @@ Blockly.Blocks["groupby"] = {
 };
 Blockly.JavaScript["groupby"] = function(block) {
     var code = Blockly.JavaScript.statementToCode(block, "groupInput");
-    return "GROUP BY " + Blockly.JavaScript.statementToCode(block, "groupInput");
+    return "\nGROUP BY " + Blockly.JavaScript.statementToCode(block, "groupInput");
 };

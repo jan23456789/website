@@ -12,5 +12,5 @@ Blockly.Blocks["where"] = {
 };
 
 Blockly.JavaScript["where"] = function(block) {
-    return `WHERE ${Blockly.JavaScript.statementToCode(block, "where")}`;
+    return `\nWHERE ${Blockly.JavaScript.statementToCode(block, "where")}`;
 };
