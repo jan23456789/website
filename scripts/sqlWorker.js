@@ -11,7 +11,7 @@ var allTables = [["Auf Canvas ziehen","Erst Datenbank hochladen"]];
 var isFileChange = false;
 var fieldMapping = {};
 var iterator = 0;
-
+var currFileName = "";
 // Start the worker in which sql.js will run
 var worker = new Worker("scripts/worker.sql-wasm.js");
 worker.onerror = error;
@@ -170,6 +170,7 @@ var editor = CodeMirror.fromTextArea(commandsElm, {
 // Load a db from a file
 dbFileElm.onchange = function () {
 	var f = dbFileElm.files[0];
+	currFileName = f.name;
 	var r = new FileReader();
 	r.onload = function () {
 		worker.onmessage = function () {
@@ -198,7 +199,7 @@ function savedb() {
 		var a = document.createElement("a");
 		document.body.appendChild(a);
 		a.href = window.URL.createObjectURL(blob);
-		a.download = "sql.sqlite";
+		a.download = currFileName;
 		a.onclick = function () {
 			setTimeout(function () {
 				window.URL.revokeObjectURL(a.href);
