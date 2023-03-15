@@ -96,6 +96,6 @@ Blockly.JavaScript["select"] = function(block) {
         var current = "ADD" + i;
         select += (i != this.itemCount_-1) ? `${Blockly.JavaScript.statementToCode(block, current)}, ` : `${Blockly.JavaScript.statementToCode(block, current)}`;
     }
-    var option = (Blockly.JavaScript.variableDB_.getName(block.getFieldValue("option"))=="") ? "SELECT " : "SELECT DISTINCT ";
+    var option = (block.getFieldValue("option")=="") ? "SELECT " : "SELECT DISTINCT ";
     return option + select;
 };
