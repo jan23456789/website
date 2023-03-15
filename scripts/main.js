@@ -3,6 +3,7 @@ var blocklyArea = document.getElementById("blocklyArea");
 var blocklyDiv = document.getElementById("blocklyDiv");
 let workspace = Blockly.inject(blocklyDiv, 
                               {
+                                theme: "dark",
                                 media: "https://unpkg.com/blockly/media/",
                                 toolbox: document.getElementById("toolbox"),
                                 scrollbars: false,
